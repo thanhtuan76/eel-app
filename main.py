@@ -36,6 +36,28 @@ def initData(country):
                 date = np.array([date]).T
 
 
+def initContinent(continent):
+    global date, data_case, data_death, drawX, drawY
+    count = 0
+    result = pandas.read_csv('owid-covid-data.csv')
+    newCase = result[['new_cases', 'new_deaths', 'continent', 'date']]
+    newCase = newCase[newCase.continent == continent]
+    for i in newCase.values:
+        if i[0] != 0.0:
+            if i[1] != 0.0:
+                data_case = np.append(data_case, i[0])
+                data_case = np.array([data_case]).T
+                data_case = np.nan_to_num(data_case)
+
+                data_death = np.append(data_death, i[1])
+                data_death = np.array([data_death]).T
+                data_death = np.nan_to_num(data_death)
+
+                count += 1
+                date = np.append(date, count)
+                date = np.array([date]).T
+
+
 def array_(X, a):
     X5 = np.array([[]]).T
     for x1 in X:
@@ -134,23 +156,27 @@ def loadLocation():
     f.close()
 
 loadLocation()
+
+code = 0
 @eel.expose
 def locaExist(loca):
-    a = 0
+    global code
     if loca in location:
-        a = 1
+        code = 1
     else:
-        a = 0
-    print(a)
-    eel.checkInput(a)
+        code = 0
+    eel.checkInput(code)
 
 
+# MAIN FUNCTION
+# code is used to check existence country
 @eel.expose
-def plotGraph(country):
-    initData(country)
-    predict(date, data_case, 'New case of ' + country, 'poly')
-    # predict(date, data_death, 'New death of ' + country, 'poly')
-    clearData()
+def plotGraph(country, code):
+    if (code == 1):
+        initData(country)
+        predict(date, data_case, 'New case of ' + country, 'poly')
+        predict(date, data_death, 'New death of ' + country, 'poly')
+        clearData()
 
 
 # Opening JSON file

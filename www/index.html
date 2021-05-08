@@ -2,6 +2,7 @@
 
 <head>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="tab.css">
   <link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="./flag-icon-css/css/flag-icon.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -10,76 +11,110 @@
 </head>
 
 <body>
-  <div class="demo">
-    <div class="container">
-      <div class="main">
-        <h1>Python - Linear Regression Project</h1>
-
-        <form id="app-cover">
-          <div id="select-box">
-            <input type="checkbox" id="options-view-button">
-            <div id="select-button" class="brd">
-              <div id="selected-value">
-                <span onchange="updateCountry()">Select a country</span>
+  <div class="phone_wrapper">
+    <header>
+      <div class="speaker">
+        <div class="mic"></div>
+      </div>
+      <nav>
+        <div class="tab tab1 active">
+          <div class="block">
+            AAA
+          </div>
+        </div>
+        <div class="tab tab2">
+          <div class="block">BBB</div>
+        </div>
+        <div class="tab tab3">
+          <div class="block">CCC</div>
+        </div>
+        <div class="indicator"></div>
+      </nav>
+    </header>
+    <main>
+      <div class="tab_reel">
+        <div class="tab_panel1 tab-active">
+          <div class="demo">
+            <div class="container">
+              <div class="main">
+                <!-- <h1>Python - Linear Regression Project</h1> -->
+        
+                <form id="app-cover">
+                  <div id="select-box">
+                    <input type="checkbox" id="options-view-button">
+                    <div id="select-button" class="brd">
+                      <div id="selected-value">
+                        <span onchange="updateCountry()">Select a country</span>
+                      </div>
+                      <div id="chevrons">
+                        <i class="material-icons">keyboard_arrow_up</i>
+                        <i class="material-icons">keyboard_arrow_down</i>
+                      </div>
+                    </div>
+                    <div id="options">
+                      <div class="option">
+                        <input class="s-c top" type="radio" name="platform" value="United States">
+                        <input class="s-c bottom" type="radio" name="platform" value="United States">
+                        <i class="flag-icon flag-icon-us"></i>
+                        <span class="label">United States</span>
+                        <span class="opt-val">United States</span>
+                      </div>
+                      <div class="option">
+                        <input class="s-c top" type="radio" name="platform" value="Russia">
+                        <input class="s-c bottom" type="radio" name="platform" value="Russia">
+                        <i class="flag-icon flag-icon-ru"></i>
+                        <span class="label">Russia</span>
+                        <span class="opt-val">Russia</span>
+                      </div>
+                      <div class="option">
+                        <input class="s-c top" type="radio" name="platform" value="Australia">
+                        <input class="s-c bottom" type="radio" name="platform" value="Australia">
+                        <i class="flag-icon flag-icon-au"></i>
+                        <span class="label">Australia</span>
+                        <span class="opt-val">Australia</span>
+                      </div>
+                      <div class="option">
+                        <input class="s-c top" type="radio" name="platform" value="China">
+                        <input class="s-c bottom" type="radio" name="platform" value="China">
+                        <i class="flag-icon flag-icon-cn"></i>
+                        <span class="label">China</span>
+                        <span class="opt-val">China</span>
+                      </div>
+                      <div class="option">
+                        <input class="s-c top" type="radio" name="platform" value="India">
+                        <input class="s-c bottom" type="radio" name="platform" value="India">
+                        <i class="flag-icon flag-icon-in"></i>
+                        <span class="label">India</span>
+                        <span class="opt-val">India</span>
+                      </div>
+                      <div class="option">
+                        <input class="s-c top" type="radio" name="platform" value="Brazil">
+                        <input class="s-c bottom" type="radio" name="platform" value="Brazil">
+                        <i class="flag-icon flag-icon-br"></i>
+                        <span class="label">Brazil</span>
+                        <span class="opt-val">Brazil</span>
+                      </div>
+                      <div id="option-bg"></div>
+                    </div>
+                  </div>
+                </form>
+        
+                <input id="country" class="form-control country-input mb-3" type="text" placeholder="Enter country...">
+                <button class="btn btn-click" onclick="executeGraph()">Execute</button>
               </div>
-              <div id="chevrons">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </div>
-            <div id="options">
-              <div class="option">
-                <input class="s-c top" type="radio" name="platform" value="United States">
-                <input class="s-c bottom" type="radio" name="platform" value="United States">
-                <i class="flag-icon flag-icon-us"></i>
-                <span class="label">United States</span>
-                <span class="opt-val">United States</span>
-              </div>
-              <div class="option">
-                <input class="s-c top" type="radio" name="platform" value="Russia">
-                <input class="s-c bottom" type="radio" name="platform" value="Russia">
-                <i class="flag-icon flag-icon-ru"></i>
-                <span class="label">Russia</span>
-                <span class="opt-val">Russia</span>
-              </div>
-              <div class="option">
-                <input class="s-c top" type="radio" name="platform" value="Australia">
-                <input class="s-c bottom" type="radio" name="platform" value="Australia">
-                <i class="flag-icon flag-icon-au"></i>
-                <span class="label">Australia</span>
-                <span class="opt-val">Australia</span>
-              </div>
-              <div class="option">
-                <input class="s-c top" type="radio" name="platform" value="China">
-                <input class="s-c bottom" type="radio" name="platform" value="China">
-                <i class="flag-icon flag-icon-cn"></i>
-                <span class="label">China</span>
-                <span class="opt-val">China</span>
-              </div>
-              <div class="option">
-                <input class="s-c top" type="radio" name="platform" value="India">
-                <input class="s-c bottom" type="radio" name="platform" value="India">
-                <i class="flag-icon flag-icon-in"></i>
-                <span class="label">India</span>
-                <span class="opt-val">India</span>
-              </div>
-              <div class="option">
-                <input class="s-c top" type="radio" name="platform" value="Brazil">
-                <input class="s-c bottom" type="radio" name="platform" value="Brazil">
-                <i class="flag-icon flag-icon-br"></i>
-                <span class="label">Brazil</span>
-                <span class="opt-val">Brazil</span>
-              </div>
-              <div id="option-bg"></div>
             </div>
           </div>
-        </form>
-
-        <input id="country" class="form-control mb-3" type="text" placeholder="Input country...">
-        <button class="btn btn-click" onclick="executeGraph()">Execute</button>
+        </div>
+        <div class="tab_panel2">
+          BBB
+        </div>
+        <div class="tab_panel3">
+          CCC
+        </div>
       </div>
-    </div>
+    </main>
   </div>
+  
 
 
 
@@ -89,7 +124,8 @@
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
   </script> -->
   <!-- My Javascript -->
-  <script src="linres.js"></script>
+  <script src="./js/linres.js"></script>
+  <script src="./js/switch-tab.js"></script>
   <!-- Sweet Alert -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
