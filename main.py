@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from sklearn import linear_model
-# import linear_regression as lr
 import time
 import json
 
@@ -178,10 +177,12 @@ def plotGraph(country, code):
         predict(date, data_death, 'New death of ' + country, 'poly')
         clearData()
 
-
+@eel.expose
+def contGroup(continent):
+    initContinent(continent)
+    predict(date, data_case, 'New case of ' + continent, 'poly')
+    clearData()
 # Opening JSON file
-
-
 
 
 eel.init("www")

@@ -38,10 +38,10 @@
             <div class="container">
               <div class="main">
                 <!-- <h1>Python - Linear Regression Project</h1> -->
-        
-                <form id="app-cover">
+
+                <form class="app-cover">
                   <div id="select-box">
-                    <input type="checkbox" id="options-view-button">
+                    <input type="checkbox" class="options-view-button">
                     <div id="select-button" class="brd">
                       <div id="selected-value">
                         <span onchange="updateCountry()">Select a country</span>
@@ -98,7 +98,7 @@
                     </div>
                   </div>
                 </form>
-        
+
                 <input id="country" class="form-control country-input mb-3" type="text" placeholder="Enter country...">
                 <button class="btn btn-click" onclick="executeGraph()">Execute</button>
               </div>
@@ -106,7 +106,77 @@
           </div>
         </div>
         <div class="tab_panel2">
-          BBB
+          <div class="demo">
+            <div class="container">
+              <div class="main">
+                <!-- <h1>Python - Linear Regression Project</h1> -->
+
+                <form class="app-cover">
+                  <div id="select-box">
+                    <input type="checkbox" class="options-view-button">
+                    <div id="select-button" class="brd">
+                      <div id="selected-value">
+                        <span onchange="updateCountry()">Select a continent</span>
+                      </div>
+                      <div id="chevrons">
+                        <i class="material-icons">keyboard_arrow_up</i>
+                        <i class="material-icons">keyboard_arrow_down</i>
+                      </div>
+                    </div>
+                    <div id="options">
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform">
+                        <input class="s-c bottom" type="radio" name="platform">
+                        <span class="label cname">Africa</span>
+                        <span class="opt-val">Africa</span>
+                      </div>
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform">
+                        <input class="s-c bottom" type="radio" name="platform">
+                        <span class="label cname">Antarctica</span>
+                        <span class="opt-val">Antarctica</span>
+                      </div>
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform">
+                        <input class="s-c bottom" type="radio" name="platform">
+                        <span class="label cname">Asia</span>
+                        <span class="opt-val">Asia</span>
+                      </div>
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform">
+                        <input class="s-c bottom" type="radio" name="platform">
+                        <span class="label cname">Australia</span>
+                        <span class="opt-val">Australia</span>
+                      </div>
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform" value="India">
+                        <input class="s-c bottom" type="radio" name="platform" value="India">
+                        <span class="label cname">Europe</span>
+                        <span class="opt-val">Europe</span>
+                      </div>
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform" value="Brazil">
+                        <input class="s-c bottom" type="radio" name="platform" value="Brazil">
+                        <span class="label cname">North America</span>
+                        <span class="opt-val">North America</span>
+                      </div>
+                      <div class="option coption">
+                        <input class="s-c top" type="radio" name="platform" value="Brazil">
+                        <input class="s-c bottom" type="radio" name="platform" value="Brazil">
+                        <span class="label cname">South America</span>
+                        <span class="opt-val">South America</span>
+                      </div>
+                      <div id="option-bg"></div>
+                    </div>
+                  </div>
+                </form>
+
+                <input id="continent" class="form-control country-input mb-3" disabled type="text"
+                  placeholder="Enter continent...">
+                <button class="btn btn-click" onclick="continentGroup()">Execute</button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="tab_panel3">
           CCC
@@ -114,7 +184,7 @@
       </div>
     </main>
   </div>
-  
+
 
 
 
