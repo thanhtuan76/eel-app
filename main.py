@@ -5,7 +5,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from sklearn import linear_model
-import time
 import json
 
 data_case = np.array([[]]).T
@@ -24,11 +23,11 @@ def initData(country):
             if i[1] != 0.0:
                 data_case = np.append(data_case, i[0])
                 data_case = np.array([data_case]).T
-                data_case = np.nan_to_num(data_case)
+                data_case = data_case[~np.isnan(data_case).any(axis=1)]
 
                 data_death = np.append(data_death, i[1])
                 data_death = np.array([data_death]).T
-                data_death = np.nan_to_num(data_death)
+                data_death = data_death[~np.isnan(data_death).any(axis=1)]
 
                 count += 1
                 date = np.append(date, count)
@@ -143,7 +142,10 @@ def clearData():
     global date, data_case, data_death
     date = data_case = data_death = drawX = drawY = np.array([[]]).T
 
+
 location = []
+
+
 def loadLocation():
     f = open('location.json',)
     data = json.load(f)
@@ -154,9 +156,12 @@ def loadLocation():
     # Closing file
     f.close()
 
+
 loadLocation()
 
 code = 0
+
+
 @eel.expose
 def locaExist(loca):
     global code
@@ -171,11 +176,21 @@ def locaExist(loca):
 # code is used to check existence country
 @eel.expose
 def plotGraph(country, code):
+    # empty_flag = 0
     if (code == 1):
         initData(country)
         predict(date, data_case, 'New case of ' + country, 'poly')
         predict(date, data_death, 'New death of ' + country, 'poly')
         clearData()
+
+        # if (len(data_case) != 0 and len(data_death) != 0):
+        #     empty_flag = 1
+
+        #     empty_flag = 1
+        # else:
+        #     empty_flag = 0
+        # eel.expose(empty_flag)
+
 
 @eel.expose
 def contGroup(continent):

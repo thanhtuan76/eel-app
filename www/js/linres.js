@@ -15,31 +15,17 @@ for (let i = 0; i < label.length; i++) {
 function executeGraph() {
     eel.locaExist(country.value.trim().replace(/\s+/g, " "))
     eel.expose(checkInput)
+    // eel.expose(checkEmpty)
 
-    // function checkInput() {
-    //     if (a) {
-    //         Swal.fire({
-    //             icon: 'success',
-    //             title: 'Successfully',
-    //             text: 'Plot successfully',
-    //             showConfirmButton: false,
-    //             timer: 1000
-    //         })
-    //     }
-    //     else {
-    //         Swal.fire({
-    //             icon: 'error',
-    //             title: 'Failed',
-    //             text: 'Something went wrong!'
-    //         })
-    //     }
-    //     setTimeout(eel.plotGraph(country.value.trim().replace(/\s+/g, " ")), 1000)
+    // function checkEmpty(empty_flag) {
+    //     console.log(empty_flag)
     // }
-    // setTimeout(checkInput(), 1000)
 
+    
 
     function checkInput(code) {
-        if (code == 1)
+
+        if (code == 1) {
             Swal.fire({
                 icon: 'success',
                 title: 'Successfully',
@@ -47,17 +33,18 @@ function executeGraph() {
                 showConfirmButton: false,
                 timer: 1000
             })
-        else {
+            setTimeout(eel.plotGraph(country.value.trim().replace(/\s+/g, " "), code), 1000)
+        } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Failed',
                 text: 'Something went wrong!'
             })
         }
-        setTimeout(eel.plotGraph(country.value.trim().replace(/\s+/g, " "), code), 1000)
     }
-
 }
+
+
 
 for (let i = 0; i < cname.length; i++) {
     coption[i].addEventListener('click', function () {
@@ -83,5 +70,17 @@ function continentGroup() {
             text: 'Something went wrong!'
         })
     }
-        
+
 }
+
+
+
+
+// if (empty_flag == 1)
+//     setTimeout(eel.plotGraph(country.value.trim().replace(/\s+/g, " "), code), 1000)
+// else
+//     Swal.fire({
+//         icon: 'error',
+//         title: 'Failed',
+//         text: 'The data of this country is empty!'
+//     })

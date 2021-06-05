@@ -21,13 +21,18 @@ def initData(country):
             if i[1] != 0.0:
                 data_case = np.append(data_case, i[0])
                 data_case = np.array([data_case]).T
+                # data_case = np.nan_to_num(data_case)
+                data_case = data_case[~np.isnan(data_case).any(axis=1)]
 
                 data_death = np.append(data_death, i[1])
                 data_death = np.array([data_death]).T
+                # data_death = np.nan_to_num(data_death)
+                data_death = data_death[~np.isnan(data_death).any(axis=1)]
 
                 count += 1
                 date = np.append(date, count)
                 date = np.array([date]).T
+                # date = date[~np.isnan(date)]
 
 
 def initContinent(continent):
@@ -90,8 +95,9 @@ def predict(date, case, a, type='line'):
         A = np.dot(Xbar.T, Xbar)
         b = np.dot(Xbar.T, y)
         w = np.dot(np.linalg.pinv(A), b)
+        # print(w)
 
-        # Preparing the fitting line 
+        # Preparing the fitting line
         w_0 = w[0][0]
         w_1 = w[1][0]
         if type == 'poly':
@@ -125,30 +131,63 @@ def predict(date, case, a, type='line'):
     # draw line
     plt.plot(arrayX, arrayY, color='blue', linewidth=2, label='Line predict')
 
-    # Scikit-learn linear model LR
-    plt.plot(arrayX, arrayY_sck.T, color='black', linewidth=2, label='Line SCK')
+    # Scikit-learn linear model LRplt.plot(arrayX, arrayY_sck.T, color='black', linewidth=2, label='Line SCK')
+    
     plt.legend(loc='best')
     plt.title(a + ' scikit-learn predict')
+    plt.xlabel('Days')
+    plt.ylabel('Total ' + a)
     plt.show()
 
 # In[2]:
 
 
 # Russia, United States, Australia, China, ...
-country = 'China'
+country = 'United States'
 initData(country)
 
-# print(date)
+print(data_death)
+
+# if (len(data_case) != 0 and len(data_death) != 0):
+#     a = predict(date, data_death, 'New cases', 'poly')
+# else:
+#     print('Empty data')
 
 # In[3]:
+# TEST
+# coordinate1 = [-7.173, -2.314, 2.811] 
+# coordinate2 = [-5.204, -3.598, 3.323] 
+# coordinate3 = [-3.922, -3.881, 4.044]
+# coordinate4 = [-2.734, -3.794, 3.085]
 
+# coordinate1i= np.matrix(coordinate1)
+# coordinate2i= np.matrix(coordinate2)
+# coordinate3i= np.matrix(coordinate3)
+# coordinate4i= np.matrix(coordinate4)
+
+# b0 = coordinate1i - coordinate2i
+# b1 = coordinate3i - coordinate2i
+# b2 = coordinate4i - coordinate3i
+
+# n1 = np.cross(b0, b1)
+# n2 = np.cross(b2, b1)
+
+# n12cross = np.cross(n1,n2)
+# x1= np.cross(n1,b1)/np.linalg.norm(b1)
+
+
+# n12 = np.squeeze(np.asarray(n2))
+# X12 = np.squeeze(np.asarray(x1))
+
+# print(n12)
+# print(X12)
 
 # line predict new cases
 # a = predict(date,data_case, 'New cases', 'poly')
 # line predict new death
-# b = predict(date, data_death, 'New deaths', 'poly')
+b = predict(date, data_death, 'New Deaths', 'poly')
 
 # line predict new cases of continent
-continent = 'Europe'
-initContinent(continent)
-c = predict(date, data_case, 'New cases of ' + continent, 'poly')
+# continent = 'Europe'
+# initContinent(continent)
+# c = predict(date, data_case, 'New cases of ' + continent, 'poly')
