@@ -100,8 +100,11 @@
                   </div>
                 </form>
 
-                <input id="country" class="form-control country-input mb-3" type="text" placeholder="Enter country...">
-                <button class="btn btn-click" onclick="executeGraph()">Execute</button>
+                <div class="input-form">
+                  <input id="country" class="form-control mb-3" type="text"
+                    placeholder="Enter country...">
+                  <button class="btn btn-click" onclick="executeGraph()">Execute</button>
+                </div>
               </div>
             </div>
           </div>
@@ -165,10 +168,10 @@
                     </div>
                   </div>
                 </form>
-
-                <input id="continent" class="form-control country-input mb-3" disabled type="text"
-                  placeholder="Enter continent...">
-                <button class="btn btn-click" onclick="continentGroup()">Execute</button>
+                <div class="input-form">
+                  <input id="continent" class="form-control mb-3" disabled type="text" placeholder="Enter continent...">
+                  <button class="btn btn-click" onclick="continentGroup()">Execute</button>
+                </div>
               </div>
             </div>
           </div>
@@ -176,23 +179,28 @@
         <div class="tab_panel3">
           <div class="demo">
             <div class="container">
-              <div class="main">
-                <form class="app-cover">
-                  <select onchange="insertLocaToInput1()" id="dropdown1" class="form-control mb-1" aria-label=".form-select-lg example">
+              <div class="main comp-main">
+                <form class="comp-cover">
+                  <select onchange="insertLocaToInput1()" id="dropdown1" class="form-control mb-1"
+                    aria-label=".form-select-lg example">
                     <option disabled selected>Select location 1</option>
                   </select>
-
-                  <select onchange="insertLocaToInput2()" id="dropdown2" class="form-control" aria-label=".form-select-lg example">
+                  <select onchange="insertLocaToInput2()" id="dropdown2" class="form-control"
+                    aria-label=".form-select-lg example">
                     <option disabled selected>Select location 2</option>
                   </select>
                 </form>
-                <input id="loca1" class="form-control country-input mb-3" type="text" placeholder="Enter location...">
-                <input id="loca2" class="form-control country-input mb-3" type="text" placeholder="Enter location...">
-                <button class="btn btn-click" onclick="comparison()">Execute</button>
+
+                <div class="input-form">
+                  <input id="loca1" class="form-control loca-input mb-3" type="text" placeholder="Enter location...">
+                  <input id="loca2" class="form-control mb-3" type="text" placeholder="Enter location...">
+                  <button class="btn btn-click btn-execute" onclick="comparison()">Execute</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- <img src="https://www.countryflags.io/be/flat/64.png"> -->
       </div>
     </main>
   </div>
