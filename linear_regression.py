@@ -10,30 +10,156 @@ data_case = np.array([[]]).T
 data_death = np.array([[]]).T
 date = np.array([[]]).T
 
-def initData(country):
-    global date, data_case, data_death, drawX, drawY
+data_case2 = np.array([[]]).T
+data_death2 = np.array([[]]).T
+date2 = np.array([[]]).T
+
+# OLD INITDATA FUNCTION
+# def initData(country):
+#     global date, data_case, data_death, drawX, drawY
+#     count = 0
+#     result = pandas.read_csv('owid-covid-data-210605.csv')
+#     newCase = result[['new_cases', 'new_deaths', 'location', 'date']]
+#     newCase = newCase[newCase.location == country]
+#     for i in newCase.values:
+#         if i[0] != 0.0:
+#             if i[1] != 0.0:
+#                 data_case = np.append(data_case, i[0])
+#                 data_case = np.array([data_case]).T
+#                 data_case = np.nan_to_num(data_case)
+#                 # data_case = data_case[~np.isnan(data_case).any(axis=1)]
+
+#                 data_death = np.append(data_death, i[1])
+#                 data_death = np.array([data_death]).T
+#                 data_death = np.nan_to_num(data_death)
+#                 # data_death = data_death[~np.isnan(data_death).any(axis=1)]
+
+#                 count += 1
+#                 date = np.append(date, count)
+#                 date = np.array([date]).T
+#                 # date = date[~np.isnan(date)]
+
+# NEW INITDATA FUNCTION
+def initData(country, country2=None):
+    global date, date2,data_case2,data_death2,data_case, data_death
     count = 0
-    result = pandas.read_csv('owid-covid-data.csv')
+    count2 = 0
+    result = pandas.read_csv('owid-covid-data-210605.csv')
     newCase = result[['new_cases', 'new_deaths', 'location', 'date']]
-    newCase = newCase[newCase.location == country]
-    for i in newCase.values:
+    case = newCase[newCase.location == country]
+    for i in case.values:
         if i[0] != 0.0:
             if i[1] != 0.0:
                 data_case = np.append(data_case, i[0])
                 data_case = np.array([data_case]).T
-                # data_case = np.nan_to_num(data_case)
-                data_case = data_case[~np.isnan(data_case).any(axis=1)]
+                data_case = np.nan_to_num(data_case)
 
                 data_death = np.append(data_death, i[1])
                 data_death = np.array([data_death]).T
-                # data_death = np.nan_to_num(data_death)
-                data_death = data_death[~np.isnan(data_death).any(axis=1)]
+                data_death = np.nan_to_num(data_death)
 
                 count += 1
                 date = np.append(date, count)
                 date = np.array([date]).T
-                # date = date[~np.isnan(date)]
+    if country2 != None:
+        case = newCase[newCase.location == country2]
+        for i in case.values:
+            if i[0] != 0.0:
+                if i[1] != 0.0:
+                    data_case2 = np.append(data_case2, i[0])
+                    data_case2 = np.array([data_case2]).T
+                    data_case2 = np.nan_to_num(data_case2)
 
+                    data_death2 = np.append(data_death2, i[1])
+                    data_death2 = np.array([data_death2]).T
+                    data_death2 = np.nan_to_num(data_death2)
+                    
+                    count2 += 1
+                    
+                    date2 = np.append(date2, count2)
+                    date2 = np.array([date2]).T
+
+
+def predict_country(Data2_X, Data2_y, count, arr_compare):
+    
+    X = Data2_X[count: count + 10]
+    y = Data2_y[count: count + 10]
+    
+    day = X[5]
+    
+    # Building Xbar
+    one = np.ones((X.shape[0], 1))
+    Xbar = np.concatenate((one, X), axis=1)
+
+    # Calculating weights of the fitting line
+    A = np.dot(Xbar.T, Xbar)
+    b = np.dot(Xbar.T, y)
+    w = np.dot(np.linalg.pinv(A), b)
+
+    # Preparing the fitting line
+    w_0 = w[0][0]
+    w_1 = w[1][0]
+    
+    y0 = w_0 + w_1 * day
+    arr_compare.append(y0[0])
+    
+
+#     type: line -> đường thẳng
+#           poly -> đường cong -> độ chính xác cao hơn
+#     date: tổng số ngày lấy được từ dữ liệu gốc
+#     case: muốn dự đoán số ca chết or số ca mắc mới
+def compare(case1, case2, countryA, countryB):
+    global date, date2
+    count = 0
+    if date.size > date2.size:
+        Data2_X = date2
+        Data3_X = date2
+        day = date2.size
+    else:
+        Data2_X = date
+        Data3_X = date
+        day = date.size
+
+    Data2_y = case1
+    Data3_y = case2
+    
+    arrayX = np.array([[]]).T
+    arrayY = np.array([[]]).T
+
+    arrayX2 = np.array([[]]).T
+    arrayY2 = np.array([[]]).T
+    
+    label = []
+    arr_compare = []
+    arr_compare2 = []
+    i=0
+        
+    for i in range(0, day // 10):
+        i+=1
+        predict_country(Data2_X, Data2_y, count, arr_compare)
+        predict_country(Data3_X, Data3_y, count, arr_compare2)
+        count += 10
+        label.append(i)
+
+    x = np.arange(len(label))  # the label locations
+    width = 0.35 # the width of the bars
+    
+    plt.figure(figsize=(18,6))
+    
+    rects1 = plt.bar(x - width/2, arr_compare, width, label=countryA)
+    rects2 = plt.bar(x + width/2, arr_compare2, width, label=countryB)
+    plt.title('Compare', fontsize=20)
+    plt.xticks(x, label, fontsize=15)
+    plt.yticks(fontsize=15)
+    plt.legend(loc='best', fontsize=10)
+
+    plt.bar_label(rects1, padding=3, fontsize = 10)
+    plt.bar_label(rects2, padding=3, fontsize = 10)
+    
+    
+    plt.tight_layout()
+
+    plt.show()
 
 def initContinent(continent):
     global date, data_case, data_death, drawX, drawY
@@ -74,6 +200,7 @@ def predict(date, case, a, type='line'):
     arrayX = np.array([[]]).T
     arrayY = np.array([[]]).T
     arrayY_sck = np.array([[]]).T
+
 
     plt.figure(figsize=(14, 5))
     day = len(date)
@@ -144,43 +271,13 @@ def predict(date, case, a, type='line'):
 
 # Russia, United States, Australia, China, ...
 country = 'United States'
-initData(country)
-
-print(data_death)
-
-# if (len(data_case) != 0 and len(data_death) != 0):
-#     a = predict(date, data_death, 'New cases', 'poly')
-# else:
-#     print('Empty data')
+initData('Russia')
+# compare(data_case, data_case2, 'Russia', 'Australia')
+# print(data_death)
+# print('========================')
+# print(date)
 
 # In[3]:
-# TEST
-# coordinate1 = [-7.173, -2.314, 2.811] 
-# coordinate2 = [-5.204, -3.598, 3.323] 
-# coordinate3 = [-3.922, -3.881, 4.044]
-# coordinate4 = [-2.734, -3.794, 3.085]
-
-# coordinate1i= np.matrix(coordinate1)
-# coordinate2i= np.matrix(coordinate2)
-# coordinate3i= np.matrix(coordinate3)
-# coordinate4i= np.matrix(coordinate4)
-
-# b0 = coordinate1i - coordinate2i
-# b1 = coordinate3i - coordinate2i
-# b2 = coordinate4i - coordinate3i
-
-# n1 = np.cross(b0, b1)
-# n2 = np.cross(b2, b1)
-
-# n12cross = np.cross(n1,n2)
-# x1= np.cross(n1,b1)/np.linalg.norm(b1)
-
-
-# n12 = np.squeeze(np.asarray(n2))
-# X12 = np.squeeze(np.asarray(x1))
-
-# print(n12)
-# print(X12)
 
 # line predict new cases
 # a = predict(date,data_case, 'New cases', 'poly')

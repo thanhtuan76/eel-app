@@ -10,7 +10,7 @@
 
 </head>
 
-<body>
+<body onload="addLocation();">
   <div class="phone_wrapper">
     <header>
       <div class="speaker">
@@ -33,6 +33,7 @@
     </header>
     <main>
       <div class="tab_reel">
+
         <div class="tab_panel1 tab-active">
           <div class="demo">
             <div class="container">
@@ -139,8 +140,8 @@
                       <div class="option coption">
                         <input class="s-c top" type="radio" name="platform">
                         <input class="s-c bottom" type="radio" name="platform">
-                        <span class="label cname">Australia</span>
-                        <span class="opt-val">Australia</span>
+                        <span class="label cname">Oceania</span>
+                        <span class="opt-val">Oceania</span>
                       </div>
                       <div class="option coption">
                         <input class="s-c top" type="radio" name="platform" value="India">
@@ -173,7 +174,24 @@
           </div>
         </div>
         <div class="tab_panel3">
-          CCC
+          <div class="demo">
+            <div class="container">
+              <div class="main">
+                <form class="app-cover">
+                  <select onchange="insertLocaToInput1()" id="dropdown1" class="form-control mb-1" aria-label=".form-select-lg example">
+                    <option disabled selected>Select location 1</option>
+                  </select>
+
+                  <select onchange="insertLocaToInput2()" id="dropdown2" class="form-control" aria-label=".form-select-lg example">
+                    <option disabled selected>Select location 2</option>
+                  </select>
+                </form>
+                <input id="loca1" class="form-control country-input mb-3" type="text" placeholder="Enter location...">
+                <input id="loca2" class="form-control country-input mb-3" type="text" placeholder="Enter location...">
+                <button class="btn btn-click" onclick="comparison()">Execute</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -192,6 +210,7 @@
   <script src="./js/switch-tab.js"></script>
   <!-- Sweet Alert -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="./jquery/dist/jquery.min.js"></script>
 </body>
 
 </html>
