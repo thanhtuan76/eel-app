@@ -10,7 +10,7 @@ html {
 
 .phone_wrapper {
     /* width: 320px; */
-    /* height: 470px; */
+    height: 100%;
     display: flex;
     flex-direction: column;
     background: white;
@@ -91,7 +91,7 @@ html {
 }
 
 .phone_wrapper main .tab_reel {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     display: flex;
     justify-content: space-between;

@@ -310,7 +310,7 @@ def locaExist2(loca1, loca2):
         flag = 1
     else:
         flag = 0
-    eel.checkInput(flag)
+    eel.checkExist(flag)
 
 
 # MAIN FUNCTION

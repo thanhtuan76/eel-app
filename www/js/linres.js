@@ -1,13 +1,22 @@
+// PANEL 1
 var label = document.getElementsByClassName("label")
+var country_input = document.getElementById("country")
+
+// PANEL 2
 var cname = document.getElementsByClassName("cname")
-var country = document.getElementById("country")
 var continent = document.getElementById("continent")
+
+// PANEL 3
 var location1 = document.getElementById('loca1')
 var location2 = document.getElementById('loca2')
 
+// console.log($("#flag .flag-item").length)
 
+
+
+// Location data
 var data =
-  `[
+    `[
     {
         "name": "Afghanistan",
         "code": "AF"
@@ -970,122 +979,149 @@ var data =
     }
 ]`
 
-function addLocation() {
-  var location = JSON.parse(data);
-  var dropdown1 = document.getElementById('dropdown1')
-  var dropdown2 = document.getElementById('dropdown2')
+let country_name = []
 
-  for (let i = 0; i < location.length; i++) {
-    let option1 = document.createElement('option')
-    let option2 = document.createElement('option')
-    option1.text = location[i]["name"]
-    option1.value = location[i]["name"]
-    option2.text = location[i]["name"]
-    option2.value = location[i]["name"]
-    dropdown1.add(option1)
-    dropdown2.add(option2)
-  }
+function loadLocation() {
+    var location = JSON.parse(data);
+    console.log(location[0].name)
+    var dropdown1 = document.getElementById('dropdown1')
+    var dropdown2 = document.getElementById('dropdown2')
+    let lcs = ''
+
+    // console.log(location[0].code.toLowerCase())
+
+    for (let i = 0; i < location.length; i++) {
+        let option1 = document.createElement('option')
+        let option2 = document.createElement('option')
+        option1.text = location[i]["name"]
+        option1.value = location[i]["name"]
+        option2.text = location[i]["name"]
+        option2.value = location[i]["name"]
+        dropdown1.add(option1)
+        dropdown2.add(option2)
+
+        // Load location for location list button
+        // ${'https://www.countryflags.io/vn/flat/64.png'}
+
+        lcs += `<div class="flag-item">
+                <div class="flag-img">
+                    <img src="https://www.countryflags.io/${location[i].code.toLowerCase()}/flat/64.png">
+                </div>
+                <span>${location[i].name}</span>
+            </div>`
+        $('#flag').html(lcs)
+    }
+    // console.log(code[0])
+    // console.log(country_name)
+
+
+
+    if ($('.flag-item')) {
+        $("#flag .flag-item").click(function () {
+            $("#flag .flag-item").removeClass("flag-selected")
+            $(this).addClass("flag-selected")
+
+            country_input.value = $(this).prop("innerText") // get location name when it is clicked
+        })
+    }
 }
 
 // Change input when select location
 function insertLocaToInput1() {
-  let option = document.getElementById('dropdown1').value
-  location1.value = option
+    let option = document.getElementById('dropdown1').value
+    location1.value = option
 }
 
 function insertLocaToInput2() {
-  let option = document.getElementById('dropdown2').value
-  location2.value = option
+    let option = document.getElementById('dropdown2').value
+    location2.value = option
 }
 setTimeout(insertLocaToInput1, 1000)
 setTimeout(insertLocaToInput2, 1000)
 
 for (let i = 0; i < label.length; i++) {
-  var option = document.getElementsByClassName("option")
-  option[i].addEventListener('click', function () {
-    c = label[i].innerHTML.toString()
-    country.value = c
-  })
+    var option = document.getElementsByClassName("option")
+    option[i].addEventListener('click', function () {
+        c = label[i].innerHTML.toString()
+        country_input.value = c
+    })
 }
 
 // MAIN
 function executeGraph() {
-  eel.locaExist(country.value.trim().replace(/\s+/g, " "))
-  eel.expose(checkInput)
-
-  // Check location existence
-  function checkInput(code) {
+    eel.locaExist(country_input.value.trim().replace(/\s+/g, " "))
+}
+// Check location existence
+eel.expose(checkInput)
+function checkInput(code) {
 
     if (code == 1) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Successfully',
-        text: 'Plot successfully',
-        showConfirmButton: false,
-        timer: 1000
-      })
-      setTimeout(eel.plotGraph(country.value.trim().replace(/\s+/g, " "), code), 1000)
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully',
+            text: 'Plot successfully',
+            showConfirmButton: false,
+            timer: 1000
+        })
+        setTimeout(eel.plotGraph(country_input.value.trim().replace(/\s+/g, " "), code), 1000)
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed',
-        text: 'Something went wrong!'
-      })
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Something went wrong!'
+        })
     }
-  }
 }
 
 for (let i = 0; i < cname.length; i++) {
-  var coption = document.getElementsByClassName("coption")
-  coption[i].addEventListener('click', function () {
-    let cstring = cname[i].innerHTML.toString()
-    continent.value = cstring
-  })
+    var coption = document.getElementsByClassName("coption")
+    coption[i].addEventListener('click', function () {
+        let cstring = cname[i].innerHTML.toString()
+        continent.value = cstring
+    })
 }
 
 function continentGroup() {
-  if (continent.value) {
-    Swal.fire({
-      icon: 'success',
-      title: 'Successfully',
-      text: 'Plot successfully',
-      showConfirmButton: false,
-      timer: 1000
-    })
-    eel.contGroup(continent.value)
-  } else {
-    Swal.fire({
-      icon: 'error',
-      title: 'Failed',
-      text: 'Something went wrong!'
-    })
-  }
+    if (continent.value) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully',
+            text: 'Plot successfully',
+            showConfirmButton: false,
+            timer: 1000
+        })
+        eel.contGroup(continent.value)
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Something went wrong!'
+        })
+    }
 }
 
 
 
 
 function comparison() {
-  eel.locaExist2(location1.value.trim().replace(/\s+/g, " "), location2.value.trim().replace(/\s+/g, " "))
-
-  eel.expose(checkInput)
-  function checkInput(flag) {
+    eel.locaExist2(location1.value.trim().replace(/\s+/g, " "), location2.value.trim().replace(/\s+/g, " "))
+}
+eel.expose(checkExist)
+function checkExist(flag) {
     if (flag == 1) {
-      Swal.fire({
-        icon: 'success',
-        title: 'Successfully',
-        text: 'Plot successfully',
-        showConfirmButton: false,
-        timer: 1000
-      })
-      eel.locaComparison(location1.value, location2.value)
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully',
+            text: 'Plot successfully',
+            showConfirmButton: false,
+            timer: 1000
+        })
+        eel.locaComparison(location1.value, location2.value)
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Failed',
-        text: 'Location is not exist!!!'
-      })
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Location is not exist!!!'
+        })
     }
-  }
-
 }

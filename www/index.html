@@ -6,11 +6,18 @@
   <link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
   <link rel="stylesheet" href="./flag-icon-css/css/flag-icon.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="./jquery/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
   <title>EEL Project</title>
 
 </head>
 
-<body onload="addLocation();">
+<body onload="loadLocation();">
   <div class="phone_wrapper">
     <header>
       <div class="speaker">
@@ -41,7 +48,7 @@
                 <!-- <h1>Python - Linear Regression Project</h1> -->
 
                 <form class="app-cover">
-                  <div id="select-box">
+                  <div class="mb-2" id="select-box">
                     <input type="checkbox" class="options-view-button">
                     <div id="select-button" class="brd">
                       <div id="selected-value">
@@ -98,11 +105,14 @@
                       <div id="option-bg"></div>
                     </div>
                   </div>
+
+                  <button type="button" class="btn btn-listview" data-toggle="modal" data-target="#exampleModal">
+                    <b>LOCATION LIST</b>
+                  </button>
                 </form>
 
                 <div class="input-form">
-                  <input id="country" class="form-control mb-3" type="text"
-                    placeholder="Enter country...">
+                  <input id="country" class="form-control mb-3" type="text" placeholder="Enter country...">
                   <button class="btn btn-click" onclick="executeGraph()">Execute</button>
                 </div>
               </div>
@@ -118,7 +128,7 @@
                 <form class="app-cover">
                   <div id="select-box">
                     <input type="checkbox" class="options-view-button">
-                    <div id="select-button" class="brd">
+                    <div id="select-button">
                       <div id="selected-value">
                         <span onchange="updateCountry()">Select a continent</span>
                       </div>
@@ -201,24 +211,47 @@
           </div>
         </div>
         <!-- <img src="https://www.countryflags.io/be/flat/64.png"> -->
+
+        <!-- Modal Country-Panel -->
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div id="flag" class="modal-cover">
+                  <!-- <div class="flag-item">
+                    <div class="flag-img">
+                      <img src="https://www.countryflags.io/vn/flat/64.png">
+                    </div>
+                    <span>Vietnam</span>
+                  </div> -->
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Select</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
 
 
 
-
   <script src="eel.js"></script>
-  <!-- Popper.js -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script> -->
   <!-- My Javascript -->
   <script src="./js/linres.js"></script>
   <script src="./js/switch-tab.js"></script>
   <!-- Sweet Alert -->
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  <script src="./jquery/dist/jquery.min.js"></script>
+
 </body>
 
 </html>

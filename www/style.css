@@ -34,8 +34,8 @@ body .main {
 }
 
 .main .btn-click {
-    color: #ffffffd3;
-    background-color: #009eb6c5;
+    color: #fff;
+    background-color: #009eb6;
     font-size: 1.5rem;
     width: 80%;
     text-align: center;
@@ -46,8 +46,8 @@ body .main {
 }
 
 .btn-click:hover {
-    background-color: #009eb6;
-    color: #fff !important;
+    background-color: #008a9efb;
+    color: #dfdfdf !important;
 }
 
 
@@ -74,6 +74,8 @@ body .main {
 
 
 .app-cover {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     right: 0;
@@ -477,7 +479,7 @@ input[type="radio"] {
 }
 
 .comp-main {
-    height: 70% !important;
+    height: 85% !important;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -487,4 +489,62 @@ input[type="radio"] {
 .comp-main .comp-cover {
     position: relative;
     bottom: 60px;
+}
+
+/* MODAL */
+.btn-listview {
+    color: #fff !important;
+    background-color: #0e6f6b !important;
+}
+
+.btn-listview:hover {
+    color: #dbdbdb !important;
+    background-color: #0d6865 !important;
+}
+
+.modal-body {
+    height: 500px;
+    overflow: scroll;
+}
+
+.modal-cover {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flag-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 140px;
+    height: 80px;
+    transition: all .1s ease-in-out;
+    padding: 10px;
+    margin-right: 7px;
+    border-radius: 7px;
+}
+
+.flag-item span {
+    text-align: center;
+    overflow: auto;
+}
+
+.flag-selected {
+    color: #ffffff;
+    background: #8f8f8f;
+}
+
+.flag-item:hover {
+    color: #ffffff;
+    background: #bebebe;
+    transition: all .1s ease-in-out;
+}
+
+.flag-item .flag-img {
+    width: 30px;
+}
+
+.flag-item .flag-img img{
+    width: 100%;
 }
