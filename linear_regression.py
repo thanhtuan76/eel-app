@@ -1,8 +1,10 @@
 from __future__ import division, print_function, unicode_literals
+from os import replace
 import pandas
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from datetime import datetime
 from sklearn import linear_model
 
 
@@ -13,40 +15,18 @@ date = np.array([[]]).T
 data_case2 = np.array([[]]).T
 data_death2 = np.array([[]]).T
 date2 = np.array([[]]).T
+days_detail = np.array([[]]).T
+days_detail2 = np.array([[]]).T
 
-# OLD INITDATA FUNCTION
-# def initData(country):
-#     global date, data_case, data_death, drawX, drawY
-#     count = 0
-#     result = pandas.read_csv('owid-covid-data-210605.csv')
-#     newCase = result[['new_cases', 'new_deaths', 'location', 'date']]
-#     newCase = newCase[newCase.location == country]
-#     for i in newCase.values:
-#         if i[0] != 0.0:
-#             if i[1] != 0.0:
-#                 data_case = np.append(data_case, i[0])
-#                 data_case = np.array([data_case]).T
-#                 data_case = np.nan_to_num(data_case)
-#                 # data_case = data_case[~np.isnan(data_case).any(axis=1)]
 
-#                 data_death = np.append(data_death, i[1])
-#                 data_death = np.array([data_death]).T
-#                 data_death = np.nan_to_num(data_death)
-#                 # data_death = data_death[~np.isnan(data_death).any(axis=1)]
-
-#                 count += 1
-#                 date = np.append(date, count)
-#                 date = np.array([date]).T
-#                 # date = date[~np.isnan(date)]
-
-# NEW INITDATA FUNCTION
 def initData(country, country2=None):
-    global date, date2,data_case2,data_death2,data_case, data_death
+    global date, date2, data_case2, data_death2, data_case, data_death, days_detail, days_detail2
     count = 0
     count2 = 0
-    result = pandas.read_csv('owid-covid-data-210605.csv')
+    result = pandas.read_csv('owid-covid-data-210616.csv')
     newCase = result[['new_cases', 'new_deaths', 'location', 'date']]
     case = newCase[newCase.location == country]
+    # print(case.values)
     for i in case.values:
         if i[0] != 0.0:
             if i[1] != 0.0:
@@ -61,6 +41,11 @@ def initData(country, country2=None):
                 count += 1
                 date = np.append(date, count)
                 date = np.array([date]).T
+
+                days_detail = np.append(days_detail, i[3])
+                days_detail = np.array([days_detail]).T
+
+
     if country2 != None:
         case = newCase[newCase.location == country2]
         for i in case.values:
@@ -73,20 +58,25 @@ def initData(country, country2=None):
                     data_death2 = np.append(data_death2, i[1])
                     data_death2 = np.array([data_death2]).T
                     data_death2 = np.nan_to_num(data_death2)
-                    
+
                     count2 += 1
-                    
+
                     date2 = np.append(date2, count2)
                     date2 = np.array([date2]).T
 
+                    days_detail2 = np.append(days_detail2, i[3])
+                    days_detail2 = np.array([days_detail2]).T
+        # print(days_detail2[0][0])
+        # print(len(days_detail2))
+
 
 def predict_country(Data2_X, Data2_y, count, arr_compare):
-    
+
     X = Data2_X[count: count + 10]
     y = Data2_y[count: count + 10]
-    
+
     day = X[5]
-    
+
     # Building Xbar
     one = np.ones((X.shape[0], 1))
     Xbar = np.concatenate((one, X), axis=1)
@@ -99,74 +89,81 @@ def predict_country(Data2_X, Data2_y, count, arr_compare):
     # Preparing the fitting line
     w_0 = w[0][0]
     w_1 = w[1][0]
-    
+
     y0 = w_0 + w_1 * day
     arr_compare.append(y0[0])
-    
+
 
 #     type: line -> đường thẳng
 #           poly -> đường cong -> độ chính xác cao hơn
 #     date: tổng số ngày lấy được từ dữ liệu gốc
 #     case: muốn dự đoán số ca chết or số ca mắc mới
 def compare(case1, case2, countryA, countryB):
-    global date, date2
+    global date, date2, days_detail, days_detail2
     count = 0
     if date.size > date2.size:
         Data2_X = date2
         Data3_X = date2
         day = date2.size
+        day_info = days_detail2
     else:
         Data2_X = date
         Data3_X = date
         day = date.size
+        day_info = days_detail
+    
+    # print(day_info)
 
     Data2_y = case1
     Data3_y = case2
-    
+
     arrayX = np.array([[]]).T
     arrayY = np.array([[]]).T
 
     arrayX2 = np.array([[]]).T
     arrayY2 = np.array([[]]).T
-    
+
     label = []
     arr_compare = []
     arr_compare2 = []
-    i=0
-        
+    i = 0
+
     for i in range(0, day // 10):
-        i+=1
+        i += 1
         predict_country(Data2_X, Data2_y, count, arr_compare)
         predict_country(Data3_X, Data3_y, count, arr_compare2)
+        label.append(datetime.strptime(str(day_info[count][0]), "%Y-%m-%d").strftime("%d/%m/%Y") + ' - ' + datetime.strptime(str(day_info[count + 9][0]), "%Y-%m-%d").strftime("%d/%m/%Y"))
         count += 10
-        label.append(i)
+    
 
     x = np.arange(len(label))  # the label locations
-    width = 0.35 # the width of the bars
-    
-    plt.figure(figsize=(18,6))
-    
+    width = 0.35  # the width of the bars
+
+    plt.figure(figsize=(18, 6))
+
     rects1 = plt.bar(x - width/2, arr_compare, width, label=countryA)
     rects2 = plt.bar(x + width/2, arr_compare2, width, label=countryB)
     plt.title('Compare', fontsize=20)
-    plt.xticks(x, label, fontsize=15)
-    plt.yticks(fontsize=15)
+    plt.xticks(x, label, fontsize=7, rotation="80")
+    plt.yticks(fontsize=12)
+    plt.xlabel('Stages', fontsize=10)
     plt.legend(loc='best', fontsize=10)
 
-    plt.bar_label(rects1, padding=3, fontsize = 10)
-    plt.bar_label(rects2, padding=3, fontsize = 10)
-    
-    
+    plt.bar_label(rects1, padding=3, fontsize=10)
+    plt.bar_label(rects2, padding=3, fontsize=10)
+
     plt.tight_layout()
 
     plt.show()
 
+
 def initContinent(continent):
     global date, data_case, data_death, drawX, drawY
     count = 0
-    result = pandas.read_csv('owid-covid-data.csv')
+    result = pandas.read_csv('owid-covid-data-210616.csv')
     newCase = result[['new_cases', 'new_deaths', 'continent', 'date']]
     newCase = newCase[newCase.continent == continent]
+    newCase = newCase.groupby('date').sum()
     for i in newCase.values:
         if i[0] != 0.0:
             if i[1] != 0.0:
@@ -201,7 +198,6 @@ def predict(date, case, a, type='line'):
     arrayY = np.array([[]]).T
     arrayY_sck = np.array([[]]).T
 
-
     plt.figure(figsize=(14, 5))
     day = len(date)
 
@@ -218,7 +214,7 @@ def predict(date, case, a, type='line'):
         if type == 'poly':
             Xbar = np.concatenate((Xbar, X2), axis=1)
 
-        # Calculating weights of the fitting line 
+        # Calculating weights of the fitting line
         A = np.dot(Xbar.T, Xbar)
         b = np.dot(Xbar.T, y)
         w = np.dot(np.linalg.pinv(A), b)
@@ -254,12 +250,13 @@ def predict(date, case, a, type='line'):
 
         count += 10
     # Drawing data
-    plt.plot(Data2_X[:(day // 10) * 10], Data2_y[:(day // 10) * 10], 'ro', label=a)
+    plt.plot(Data2_X[:(day // 10) * 10],
+             Data2_y[:(day // 10) * 10], 'ro', label=a)
     # draw line
     plt.plot(arrayX, arrayY, color='blue', linewidth=2, label='Line predict')
 
     # Scikit-learn linear model LRplt.plot(arrayX, arrayY_sck.T, color='black', linewidth=2, label='Line SCK')
-    
+
     plt.legend(loc='best')
     plt.title(a + ' scikit-learn predict')
     plt.xlabel('Days')
@@ -271,18 +268,18 @@ def predict(date, case, a, type='line'):
 
 # Russia, United States, Australia, China, ...
 country = 'United States'
-initData('Russia')
-# compare(data_case, data_case2, 'Russia', 'Australia')
+initData('United States', 'India')
+compare(data_case, data_case2, 'United States', 'India')
 # print(data_death)
 # print('========================')
-# print(date)
+# print(days_detail[0])
 
 # In[3]:
 
 # line predict new cases
 # a = predict(date,data_case, 'New cases', 'poly')
 # line predict new death
-b = predict(date, data_death, 'New Deaths', 'poly')
+# b = predict(date, data_death, 'New Deaths', 'poly')
 
 # line predict new cases of continent
 # continent = 'Europe'

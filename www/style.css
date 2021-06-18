@@ -35,6 +35,7 @@ body .main {
 
 .main .btn-click {
     color: #fff;
+    display: block;
     background-color: #009eb6;
     font-size: 1.5rem;
     width: 80%;
@@ -42,6 +43,7 @@ body .main {
     text-transform: uppercase;
     font-weight: 700;
     transition: all ease-in .2s;
+    box-shadow: 2px 16px 36px -10px #000;
     /* background-color: rgb(48, 128, 231); */
 }
 
@@ -495,6 +497,7 @@ input[type="radio"] {
 .btn-listview {
     color: #fff !important;
     background-color: #0e6f6b !important;
+    box-shadow: 2px 16px 36px -10px #000;
 }
 
 .btn-listview:hover {

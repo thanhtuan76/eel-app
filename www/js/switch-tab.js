@@ -41,6 +41,9 @@ function slide3(e) {
     panel3.classList.add('tab-active')
     panel1.classList.remove('tab-active')
     panel2.classList.remove('tab-active')
+
+    location1.value = ''
+    location2.value = ''
 	// reel.style.transform = "translateX(-98%)"
 }
 

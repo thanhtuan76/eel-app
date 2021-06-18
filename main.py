@@ -4,48 +4,28 @@ import pandas
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from datetime import datetime
 from sklearn import linear_model
 import json
 
 data_case = np.array([[]]).T
 data_death = np.array([[]]).T
 date = np.array([[]]).T
+days_detail = np.array([[]]).T
 
 data_case2 = np.array([[]]).T
 data_death2 = np.array([[]]).T
 date2 = np.array([[]]).T
+days_detail2 = np.array([[]]).T
 
-# def initData(country):
-#     global date, data_case, data_death, drawX, drawY
-#     count = 0
-#     result = pandas.read_csv('owid-covid-data-210605.csv')
-#     newCase = result[['new_cases', 'new_deaths', 'location', 'date']]
-#     newCase = newCase[newCase.location == country]
-#     for i in newCase.values:
-#         if i[0] != 0.0:
-#             if i[1] != 0.0:
-#                 data_case = np.append(data_case, i[0])
-#                 data_case = np.array([data_case]).T
-#                 data_case = np.nan_to_num(data_case)
-#                 # data_case = data_case[~np.isnan(data_case).any(axis=1)]
 
-#                 data_death = np.append(data_death, i[1])
-#                 data_death = np.array([data_death]).T
-#                 data_death = np.nan_to_num(data_death)
-#                 # data_death = data_death[~np.isnan(data_death).any(axis=1)]
-
-#                 count += 1
-#                 date = np.append(date, count)
-#                 date = np.array([date]).T
 
 # NEW INITDATA FUNCTION
-
-
 def initData(country, country2=None):
-    global date, date2, data_case2, data_death2, data_case, data_death
+    global date, date2, data_case2, data_death2, data_case, data_death, days_detail, days_detail2
     count = 0
     count2 = 0
-    result = pandas.read_csv('owid-covid-data-210605.csv')
+    result = pandas.read_csv('owid-covid-data-210616.csv')
     newCase = result[['new_cases', 'new_deaths', 'location', 'date']]
     case = newCase[newCase.location == country]
     for i in case.values:
@@ -62,6 +42,10 @@ def initData(country, country2=None):
                 count += 1
                 date = np.append(date, count)
                 date = np.array([date]).T
+
+                days_detail = np.append(days_detail, i[3])
+                days_detail = np.array([days_detail]).T
+
     if country2 != None:
         case = newCase[newCase.location == country2]
         for i in case.values:
@@ -80,13 +64,15 @@ def initData(country, country2=None):
                     date2 = np.append(date2, count2)
                     date2 = np.array([date2]).T
 
+                    days_detail2 = np.append(days_detail2, i[3])
+                    days_detail2 = np.array([days_detail2]).T
 
 def predict_country(Data2_X, Data2_y, count, arr_compare):
 
     X = Data2_X[count: count + 10]
     y = Data2_y[count: count + 10]
 
-    day = X[5]
+    day = X[9]
 
     # Building Xbar
     one = np.ones((X.shape[0], 1))
@@ -109,27 +95,23 @@ def predict_country(Data2_X, Data2_y, count, arr_compare):
 #           poly -> đường cong -> độ chính xác cao hơn
 #     date: tổng số ngày lấy được từ dữ liệu gốc
 #     case: muốn dự đoán số ca chết or số ca mắc mới
-
-def compare(case1, case2, name,countryA, countryB):
+def compare(case1, case2, name, countryA, countryB):
     global date, date2
     count = 0
     if date.size > date2.size:
         Data2_X = date2
         Data3_X = date2
         day = date2.size
+        day_info = days_detail2
+
     else:
         Data2_X = date
         Data3_X = date
         day = date.size
+        day_info = days_detail
 
     Data2_y = case1
     Data3_y = case2
-
-    arrayX = np.array([[]]).T
-    arrayY = np.array([[]]).T
-
-    arrayX2 = np.array([[]]).T
-    arrayY2 = np.array([[]]).T
 
     label = []
     arr_compare = []
@@ -140,8 +122,9 @@ def compare(case1, case2, name,countryA, countryB):
         i += 1
         predict_country(Data2_X, Data2_y, count, arr_compare)
         predict_country(Data3_X, Data3_y, count, arr_compare2)
+        label.append(datetime.strptime(str(day_info[count][0]), "%Y-%m-%d")
+        .strftime("%d/%m/%Y") + ' - ' + datetime.strptime(str(day_info[count + 9][0]), "%Y-%m-%d").strftime("%d/%m/%Y"))
         count += 10
-        label.append(i)
 
     x = np.arange(len(label))  # the label locations
     width = 0.35  # the width of the bars
@@ -150,10 +133,12 @@ def compare(case1, case2, name,countryA, countryB):
 
     rects1 = plt.bar(x - width/2, arr_compare, width, label=countryA)
     rects2 = plt.bar(x + width/2, arr_compare2, width, label=countryB)
-    plt.title('The ' + name + ' comparison between ' + countryA + ' and ' + countryB, fontsize=20)
-    plt.xticks(x, label, fontsize=15)
-    plt.yticks(fontsize=15)
-    plt.xlabel('Stages')
+    plt.title('The ' + name + ' comparison between ' +
+              countryA + ' and ' + countryB, fontsize=20)
+    plt.xticks(x, label, fontsize=7, rotation="75")
+    plt.yticks(fontsize=10)
+    plt.xlabel('Stages', fontsize=10)
+    plt.ylabel('The ' + name, fontsize=10)
     plt.legend(loc='best', fontsize=10)
 
     plt.bar_label(rects1, padding=3, fontsize=10)
@@ -165,11 +150,12 @@ def compare(case1, case2, name,countryA, countryB):
 
 
 def initContinent(continent):
-    global date, data_case, data_death, drawX, drawY
+    global date, data_case, data_death
     count = 0
-    result = pandas.read_csv('owid-covid-data.csv')
+    result = pandas.read_csv('owid-covid-data-210616.csv')
     newCase = result[['new_cases', 'new_deaths', 'continent', 'date']]
     newCase = newCase[newCase.continent == continent]
+    newCase = newCase.groupby('date').sum()
     for i in newCase.values:
         if i[0] != 0.0:
             if i[1] != 0.0:
@@ -273,7 +259,8 @@ def predict(date, case, a, type='line'):
 
 def clearData():
     global date, data_case, data_death, date2, data_case2, data_death2
-    date = data_case = data_death = date2= data_case2 = data_death2 = np.array([[]]).T
+    date = data_case = data_death = date2 = data_case2 = data_death2 = np.array([
+                                                                                []]).T
 
 
 location = []
@@ -293,6 +280,8 @@ def loadLocation():
 loadLocation()
 
 code = 0
+
+
 @eel.expose
 def locaExist(loca):
     global code
@@ -302,7 +291,10 @@ def locaExist(loca):
         code = 0
     eel.checkInput(code)
 
+
 flag = 0
+
+
 @eel.expose
 def locaExist2(loca1, loca2):
     global code
@@ -315,26 +307,26 @@ def locaExist2(loca1, loca2):
 
 # MAIN FUNCTION
 @eel.expose
-def plotGraph(country, code):
-    if (code == 1):  # check location existence
-        initData(country)
-        predict(date, data_case, 'New case of ' + country, 'poly')
-        predict(date, data_death, 'New death of ' + country, 'poly')
-        clearData()
+def plotGraph(country):
+    initData(country)
+    predict(date, data_case, 'New case of ' + country, 'poly')
+    predict(date, data_death, 'New death of ' + country, 'poly')
+    clearData()
 
 
 @eel.expose
 def contGroup(continent):
     initContinent(continent)
     predict(date, data_case, 'New case of ' + continent, 'poly')
-    predict(date, data_death, 'New case of ' + continent, 'poly')
+    predict(date, data_death, 'New death of ' + continent, 'poly')
     clearData()
+
 
 @eel.expose
 def locaComparison(location1, location2):
     initData(location1, location2)
-    compare(data_case, data_case2, 'cases',location1, location2)
-    compare(data_death, data_death2, 'deaths',location1, location2)
+    compare(data_case, data_case2, 'cases', location1, location2)
+    compare(data_death, data_death2, 'deaths', location1, location2)
     clearData()
 
 
