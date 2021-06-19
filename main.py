@@ -96,7 +96,7 @@ def predict_country(Data2_X, Data2_y, count, arr_compare):
 #     date: tổng số ngày lấy được từ dữ liệu gốc
 #     case: muốn dự đoán số ca chết or số ca mắc mới
 def compare(case1, case2, name, countryA, countryB):
-    global date, date2
+    global date, date2, days_detail, days_detail2
     count = 0
     if date.size > date2.size:
         Data2_X = date2
@@ -123,7 +123,9 @@ def compare(case1, case2, name, countryA, countryB):
         predict_country(Data2_X, Data2_y, count, arr_compare)
         predict_country(Data3_X, Data3_y, count, arr_compare2)
         label.append(datetime.strptime(str(day_info[count][0]), "%Y-%m-%d")
-        .strftime("%d/%m/%Y") + ' - ' + datetime.strptime(str(day_info[count + 9][0]), "%Y-%m-%d").strftime("%d/%m/%Y"))
+        .strftime("%d/%m/%Y") + ' - ' + datetime.strptime(str(day_info[count + 9][0]), "%Y-%m-%d")
+        .strftime("%d/%m/%Y"))
+        # label.append(str(day_info[count][0]) + " to " + str(day_info[count + 9][0]))
         count += 10
 
     x = np.arange(len(label))  # the label locations

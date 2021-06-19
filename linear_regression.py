@@ -44,8 +44,10 @@ def initData(country, country2=None):
 
                 days_detail = np.append(days_detail, i[3])
                 days_detail = np.array([days_detail]).T
+    print(len(days_detail))
+    print(days_detail)
 
-
+    print("\n=====================\n")
     if country2 != None:
         case = newCase[newCase.location == country2]
         for i in case.values:
@@ -53,11 +55,11 @@ def initData(country, country2=None):
                 if i[1] != 0.0:
                     data_case2 = np.append(data_case2, i[0])
                     data_case2 = np.array([data_case2]).T
-                    data_case2 = np.nan_to_num(data_case2)
+                    # data_case2 = np.nan_to_num(data_case2)
 
                     data_death2 = np.append(data_death2, i[1])
                     data_death2 = np.array([data_death2]).T
-                    data_death2 = np.nan_to_num(data_death2)
+                    # data_death2 = np.nan_to_num(data_death2)
 
                     count2 += 1
 
@@ -66,8 +68,8 @@ def initData(country, country2=None):
 
                     days_detail2 = np.append(days_detail2, i[3])
                     days_detail2 = np.array([days_detail2]).T
-        # print(days_detail2[0][0])
-        # print(len(days_detail2))
+    print(len(days_detail2))
+    print(days_detail2)
 
 
 def predict_country(Data2_X, Data2_y, count, arr_compare):
@@ -268,8 +270,9 @@ def predict(date, case, a, type='line'):
 
 # Russia, United States, Australia, China, ...
 country = 'United States'
-initData('United States', 'India')
-compare(data_case, data_case2, 'United States', 'India')
+initData('Afghanistan', 'Australia')
+compare(data_case, data_case2, 'Afghanistan', 'Australia')
+# compare(data_death, data_death2, 'Afghanistan', 'Australia')
 # print(data_death)
 # print('========================')
 # print(days_detail[0])
