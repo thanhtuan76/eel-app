@@ -52,7 +52,6 @@ def plotGraph(country):
     ln.init_data(country)
     ln.predict('New cases of ' + country, 'poly')
     ln.predict('New deaths of ' + country, 'poly')
-    # ln.clear_data()
 
 
 @eel.expose
@@ -61,7 +60,6 @@ def contGroup(continent):
     ln.init_continent(continent)
     ln.predict('New cases of ' + continent, 'poly')
     ln.predict('New deaths of ' + continent, 'poly')
-    # ln.clear_data()
 
 
 @eel.expose
@@ -70,7 +68,6 @@ def locaComparison(location1, location2):
     ln.init_data(location1, location2)
     ln.compare('cases', location1, location2)
     ln.compare('deaths', location1, location2)
-    # ln.clear_data()
 
 
 eel.init("www")
