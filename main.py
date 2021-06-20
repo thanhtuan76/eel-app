@@ -1,4 +1,3 @@
-from __future__ import division, print_function, unicode_literals
 import eel
 import pandas
 import numpy as np
@@ -269,7 +268,7 @@ location = []
 
 
 def loadLocation():
-    f = open('location.json',)
+    f = open('location.json')
     data = json.load(f)
 
     for i in data['country']:
@@ -327,8 +326,8 @@ def contGroup(continent):
 @eel.expose
 def locaComparison(location1, location2):
     initData(location1, location2)
-    compare(data_case, data_case2, 'cases', location1, location2)
-    compare(data_death, data_death2, 'deaths', location1, location2)
+    compare(data_case, data_case2, 'new cases', location1, location2)
+    compare(data_death, data_death2, 'new deaths', location1, location2)
     clearData()
 
 

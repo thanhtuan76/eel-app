@@ -55,11 +55,11 @@ def initData(country, country2=None):
                 if i[1] != 0.0:
                     data_case2 = np.append(data_case2, i[0])
                     data_case2 = np.array([data_case2]).T
-                    # data_case2 = np.nan_to_num(data_case2)
+                    data_case2 = np.nan_to_num(data_case2)
 
                     data_death2 = np.append(data_death2, i[1])
                     data_death2 = np.array([data_death2]).T
-                    # data_death2 = np.nan_to_num(data_death2)
+                    data_death2 = np.nan_to_num(data_death2)
 
                     count2 += 1
 
@@ -77,7 +77,7 @@ def predict_country(Data2_X, Data2_y, count, arr_compare):
     X = Data2_X[count: count + 10]
     y = Data2_y[count: count + 10]
 
-    day = X[5]
+    day = X[9]
 
     # Building Xbar
     one = np.ones((X.shape[0], 1))
@@ -270,8 +270,8 @@ def predict(date, case, a, type='line'):
 
 # Russia, United States, Australia, China, ...
 country = 'United States'
-initData('Afghanistan', 'Australia')
-compare(data_case, data_case2, 'Afghanistan', 'Australia')
+initData('Vietnam', 'Uzbekistan')
+compare(data_case, data_case2, 'Vietnam', 'Uzbekistan')
 # compare(data_death, data_death2, 'Afghanistan', 'Australia')
 # print(data_death)
 # print('========================')
